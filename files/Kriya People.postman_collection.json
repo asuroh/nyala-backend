@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "76e35a8b-7930-45ff-b5cb-a62bd8764253",
+		"name": "Kriya People",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API ADMIN",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f7525a8b-81b6-4195-9a57-290724b27d07",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var token = jsonData.data.token;",
+											"pm.environment.set(\"token\", token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"superadmin2@init.com\",\n    \"password\": \"kiasu123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin?page=1&limit=5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "5",
+											"description": "max 50 default 10"
+										},
+										{
+											"key": "search",
+											"value": null,
+											"description": "by username or email",
+											"disabled": true
+										},
+										{
+											"key": "by",
+											"value": null,
+											"description": "filter data by created_at, updated_at default created_at",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": null,
+											"description": "filter data by desc, asc default desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin/id/81b6e0e4-8be0-4656-aecf-e18a98c3a0a7",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin",
+										"id",
+										"81b6e0e4-8be0-4656-aecf-e18a98c3a0a7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role_id\": \"d57bfbfe-4979-4809-a151-f6cd30de657b\",\n    \"information\": {\n        \"username\": \"admin\",\n        \"email\": \"admin@test.com\",\n        \"password\": \"kiasu123\",\n        \"status\": {\n            \"is_active\": true\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role_id\": \"381b7700-fd23-44b7-9d1f-befba9fa7d6a\",\n    \"information\": {\n        \"username\": \"Superadmin 2\",\n        \"email\": \"superadmin2@init.com\",\n        \"password\": \"kiasu123\",\n        \"status\": {\n            \"is_active\": true\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin/id/81b6e0e4-8be0-4656-aecf-e18a98c3a0a7",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin",
+										"id",
+										"81b6e0e4-8be0-4656-aecf-e18a98c3a0a7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api-admin/admin/id/fff76956-5cf6-4b2a-b571-9e078fa31fbc",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api-admin",
+										"admin",
+										"id",
+										"fff76956-5cf6-4b2a-b571-9e078fa31fbc"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
