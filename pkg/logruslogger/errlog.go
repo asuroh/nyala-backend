@@ -9,7 +9,7 @@ import (
 
 const (
 	// TOPIC for setting topic of log
-	TOPIC = "kriyapeople"
+	TOPIC = "nyala-backend"
 	// ErrorLevel ...
 	ErrorLevel = log.ErrorLevel
 	// WarnLevel ...

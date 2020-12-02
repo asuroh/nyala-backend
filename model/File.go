@@ -1,7 +1,7 @@
 package model
 
 import (
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/usecase/viewmodel"
 	"time"
 
 	"database/sql"

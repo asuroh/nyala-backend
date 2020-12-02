@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"kriyapeople/usecase"
+	"nyala-backend/usecase"
 	"net/http"
 )
 

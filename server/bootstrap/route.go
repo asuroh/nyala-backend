@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
-	"kriyapeople/pkg/logruslogger"
-	api "kriyapeople/server/handler"
-	"kriyapeople/server/middleware"
+	"nyala-backend/pkg/logruslogger"
+	api "nyala-backend/server/handler"
+	"nyala-backend/server/middleware"
 
 	chimiddleware "github.com/go-chi/chi/middleware"
 
@@ -44,6 +44,14 @@ func (boot *Bootup) RegisterRoutes() {
 		r.Use(logruslogger.NewStructuredLogger(boot.EnvConfig["LOG_FILE_PATH"], boot.EnvConfig["LOG_DEFAULT"], boot.ContractUC.ReqID))
 		r.Use(chimiddleware.Recoverer)
 
+		// API
+		r.Route("/api", func(r chi.Router) {
+			logicHandler := api.LogicHandler{Handler: handlerType}
+			r.Route("/logic", func(r chi.Router) {
+				r.Get("/fibonacci", logicHandler.GetFibonacciHandler)
+			})
+		})
+
 		// API ADMIN
 		r.Route("/api-admin", func(r chi.Router) {
 			adminHandler := api.AdminHandler{Handler: handlerType}
@@ -63,26 +71,6 @@ func (boot *Bootup) RegisterRoutes() {
 					r.Get("/id/{id}", adminHandler.GetByIDHandler)
 				})
 			})
-
-			// adminResetPasswordHandler := api.AdminResetPasswordHandler{Handler: handlerType}
-			// r.Route("/adminResetPassword", func(r chi.Router) {
-			// 	r.Group(func(r chi.Router) {
-			// 		limitInit := middleware.LimitInit{
-			// 			ContractUC: &boot.ContractUC,
-			// 			MaxLimit:   5,
-			// 			Duration:   "24h",
-			// 		}
-			// 		r.Use(limitInit.LimitForgotPassword)
-			// 		r.Post("/", adminResetPasswordHandler.ForgotPasswordHandler)
-			// 	})
-			// 	r.Group(func(r chi.Router) {
-			// 		r.Get("/token/key/{key}", adminResetPasswordHandler.GetTokenByKeyHandler)
-			// 	})
-			// 	r.Group(func(r chi.Router) {
-			// 		r.Use(mJwt.VerifyAdminForgotPasswordTokenCredential)
-			// 		r.Post("/newPassword", adminResetPasswordHandler.NewPasswordSubmitHandler)
-			// 	})
-			// })
 
 			roleHandler := api.RoleHandler{Handler: handlerType}
 			r.Route("/role", func(r chi.Router) {

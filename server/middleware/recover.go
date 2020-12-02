@@ -5,7 +5,7 @@ package middleware
 
 import (
 	"fmt"
-	apiHandler "kriyapeople/server/handler"
+	apiHandler "nyala-backend/server/handler"
 	"net/http"
 	"runtime/debug"
 

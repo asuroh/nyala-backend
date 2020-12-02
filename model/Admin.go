@@ -2,7 +2,7 @@ package model
 
 import (
 	"database/sql"
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/usecase/viewmodel"
 	"strings"
 	"time"
 )

@@ -2,14 +2,14 @@ package usecase
 
 import (
 	"errors"
-	"kriyapeople/helper"
-	"kriyapeople/model"
-	"kriyapeople/pkg/bcrypt"
-	"kriyapeople/pkg/interfacepkg"
-	"kriyapeople/pkg/logruslogger"
-	"kriyapeople/pkg/str"
-	"kriyapeople/server/request"
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/helper"
+	"nyala-backend/model"
+	"nyala-backend/pkg/bcrypt"
+	"nyala-backend/pkg/interfacepkg"
+	"nyala-backend/pkg/logruslogger"
+	"nyala-backend/pkg/str"
+	"nyala-backend/server/request"
+	"nyala-backend/usecase/viewmodel"
 	"strings"
 	"time"
 )

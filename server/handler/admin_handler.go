@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"kriyapeople/server/request"
+	"nyala-backend/server/request"
 	"net/http"
 	"strconv"
 
 	"github.com/go-chi/chi"
 
-	"kriyapeople/usecase"
+	"nyala-backend/usecase"
 
 	validator "gopkg.in/go-playground/validator.v9"
 )

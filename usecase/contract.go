@@ -3,15 +3,15 @@ package usecase
 import (
 	"encoding/json"
 	"errors"
-	"kriyapeople/pkg/aesfront"
-	"kriyapeople/pkg/logruslogger"
+	"nyala-backend/pkg/aesfront"
+	"nyala-backend/pkg/logruslogger"
 	"time"
 
 	"database/sql"
-	"kriyapeople/pkg/aes"
-	"kriyapeople/pkg/jwe"
-	"kriyapeople/pkg/jwt"
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/pkg/aes"
+	"nyala-backend/pkg/jwe"
+	"nyala-backend/pkg/jwt"
+	"nyala-backend/usecase/viewmodel"
 
 	"github.com/go-redis/redis/v7"
 	"github.com/streadway/amqp"

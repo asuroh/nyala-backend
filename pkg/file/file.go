@@ -8,7 +8,7 @@ import (
 	"github.com/rs/xid"
 	"io"
 	"io/ioutil"
-	"kriyapeople/pkg/str"
+	"nyala-backend/pkg/str"
 	"net/http"
 	"os"
 	"path/filepath"

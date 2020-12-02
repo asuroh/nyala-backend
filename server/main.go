@@ -1,18 +1,18 @@
 package main
 
 import (
-	"kriyapeople/pkg/aes"
-	"kriyapeople/pkg/aesfront"
-	"kriyapeople/pkg/amqp"
-	"kriyapeople/pkg/env"
-	"kriyapeople/pkg/interfacepkg"
-	"kriyapeople/pkg/jwe"
-	"kriyapeople/pkg/jwt"
-	"kriyapeople/pkg/logruslogger"
-	"kriyapeople/pkg/pg"
-	"kriyapeople/pkg/str"
-	boot "kriyapeople/server/bootstrap"
-	"kriyapeople/usecase"
+	"nyala-backend/pkg/aes"
+	"nyala-backend/pkg/aesfront"
+	"nyala-backend/pkg/amqp"
+	"nyala-backend/pkg/env"
+	"nyala-backend/pkg/interfacepkg"
+	"nyala-backend/pkg/jwe"
+	"nyala-backend/pkg/jwt"
+	"nyala-backend/pkg/logruslogger"
+	"nyala-backend/pkg/pg"
+	"nyala-backend/pkg/str"
+	boot "nyala-backend/server/bootstrap"
+	"nyala-backend/usecase"
 
 	"github.com/rs/xid"
 

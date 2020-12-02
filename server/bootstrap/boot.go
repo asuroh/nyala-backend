@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
-	"kriyapeople/pkg/jwe"
-	"kriyapeople/pkg/jwt"
-	"kriyapeople/usecase"
+	"nyala-backend/pkg/jwe"
+	"nyala-backend/pkg/jwt"
+	"nyala-backend/usecase"
 
 	"database/sql"
 

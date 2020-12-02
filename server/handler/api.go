@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"kriyapeople/pkg/jwe"
-	"kriyapeople/pkg/jwt"
-	"kriyapeople/pkg/str"
-	"kriyapeople/usecase"
+	"nyala-backend/pkg/jwe"
+	"nyala-backend/pkg/jwt"
+	"nyala-backend/pkg/str"
+	"nyala-backend/usecase"
 
 	"database/sql"
 	"github.com/go-playground/universal-translator"

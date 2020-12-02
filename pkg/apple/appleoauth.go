@@ -10,7 +10,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"kriyapeople/pkg/interfacepkg"
+	"nyala-backend/pkg/interfacepkg"
 	"io/ioutil"
 	"math/big"
 	"net/http"

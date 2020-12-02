@@ -3,9 +3,9 @@ package usecase
 import (
 	"errors"
 	"github.com/rs/xid"
-	"kriyapeople/helper"
-	"kriyapeople/pkg/logruslogger"
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/helper"
+	"nyala-backend/pkg/logruslogger"
+	"nyala-backend/usecase/viewmodel"
 )
 
 // JwtUC ...

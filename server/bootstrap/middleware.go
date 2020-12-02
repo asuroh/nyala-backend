@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"kriyapeople/pkg/str"
-	appMW "kriyapeople/server/middleware"
+	"nyala-backend/pkg/str"
+	appMW "nyala-backend/server/middleware"
 )
 
 // RegisterMiddleware ...

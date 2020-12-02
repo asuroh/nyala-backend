@@ -1,4 +1,4 @@
-module kriyapeople
+module nyala-backend
 
 go 1.13
 

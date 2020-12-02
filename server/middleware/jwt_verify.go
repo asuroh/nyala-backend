@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kriyapeople/model"
+	"nyala-backend/model"
 	"strings"
 
 	"net/http"
@@ -12,8 +12,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	apiHandler "kriyapeople/server/handler"
-	"kriyapeople/usecase"
+	apiHandler "nyala-backend/server/handler"
+	"nyala-backend/usecase"
 )
 
 type jwtClaims struct {

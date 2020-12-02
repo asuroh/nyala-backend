@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	apiHandler "kriyapeople/server/handler"
+	apiHandler "nyala-backend/server/handler"
 
 	"github.com/go-chi/chi"
 )

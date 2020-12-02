@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"kriyapeople/usecase"
+	"nyala-backend/usecase"
 	"time"
 
 	"github.com/streadway/amqp"

@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"kriyapeople/model"
-	"kriyapeople/pkg/logruslogger"
-	"kriyapeople/pkg/str"
-	"kriyapeople/usecase/viewmodel"
+	"nyala-backend/model"
+	"nyala-backend/pkg/logruslogger"
+	"nyala-backend/pkg/str"
+	"nyala-backend/usecase/viewmodel"
 	"strings"
 )
 

@@ -1,8 +1,9 @@
 package number
 
 import (
-	"github.com/leekchan/accounting"
 	"strings"
+
+	"github.com/leekchan/accounting"
 )
 
 // UniqueInt ...
@@ -70,4 +71,16 @@ func FormatCurrency(value float64, currencySymbol, thousandSeparator, decimalSep
 	ac := accounting.Accounting{Symbol: currencySymbol, Precision: precision, Thousand: thousandSeparator, Decimal: decimalSeparator}
 
 	return ac.FormatMoney(value)
+}
+
+// Fibonacci ...
+func Fibonacci(n float64) float64 {
+	a := float64(0)
+	b := float64(1)
+	for i := float64(0); i < n; i++ {
+		temp := a
+		a = b
+		b = temp + a
+	}
+	return a
 }
