@@ -50,6 +50,19 @@ func (boot *Bootup) RegisterRoutes() {
 			r.Route("/logic", func(r chi.Router) {
 				r.Get("/fibonacci", logicHandler.GetFibonacciHandler)
 			})
+
+			customerHandler := api.CustomerHandler{Handler: handlerType}
+			r.Route("/customer", func(r chi.Router) {
+				r.Group(func(r chi.Router) {
+					r.Post("/register", customerHandler.RegisterHandler)
+					r.Post("/login", customerHandler.LoginHandler)
+				})
+
+				r.Group(func(r chi.Router) {
+					r.Use(mJwt.VerifyRefreshTokenCredential)
+					r.Get("/refresh_token", customerHandler.RefreshTokenHandler)
+				})
+			})
 		})
 
 		// API ADMIN

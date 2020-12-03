@@ -88,7 +88,7 @@ func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, role string, singleLogi
 	return res, nil
 }
 
-func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request, role string) (res map[string]interface{}, err error) {
+func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request) (res map[string]interface{}, err error) {
 	claims := &jwtClaims{}
 
 	tokenAuthHeader := r.Header.Get("Authorization")
@@ -119,15 +119,33 @@ func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request, role string) (re
 		return res, errors.New("Error when load the payload!")
 	}
 
-	// Check if the token provided has a valid role
-	if res["role"] == nil {
-		return res, errors.New("Invalid " + role + " token!")
-	}
-	if res["role"].(string) != role {
-		return res, errors.New("Not an " + role + " token!")
-	}
-
 	return res, nil
+}
+
+// VerifyRefreshTokenCredential ...
+func (m VerifyMiddlewareInit) VerifyRefreshTokenCredential(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jweRes, err := m.verifyRefreshJWT(r)
+		if err != nil {
+			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		// Check id in table
+		customerUC := usecase.CustomerUC{ContractUC: m.ContractUC}
+		customer, err := customerUC.FindByID(jweRes["id"].(string), false)
+		if customer.CustomerID == "" {
+			apiHandler.RespondWithJSON(w, 401, 401, "Not found!", []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		jweRes["customerName"] = customer.CustomerName
+		jweRes["customerEmail"] = customer.Email
+		jweRes["customerPhoneNumber"] = customer.PhoneNumber
+
+		ctx := userContextInterface(r.Context(), r, "user", jweRes)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }
 
 // VerifySuperadminTokenCredential ...

@@ -9,6 +9,7 @@ import (
 
 	"database/sql"
 	"nyala-backend/pkg/aes"
+	"nyala-backend/pkg/hmacsha"
 	"nyala-backend/pkg/jwe"
 	"nyala-backend/pkg/jwt"
 	"nyala-backend/usecase/viewmodel"
@@ -49,6 +50,7 @@ type ContractUC struct {
 	EnvConfig   map[string]string
 	Jwt         jwt.Credential
 	Jwe         jwe.Credential
+	Hmacsha     hmacsha.Credential
 	Aes         aes.Credential
 	AesFront    aesfront.Credential
 }

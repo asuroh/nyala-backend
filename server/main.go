@@ -5,6 +5,7 @@ import (
 	"nyala-backend/pkg/aesfront"
 	"nyala-backend/pkg/amqp"
 	"nyala-backend/pkg/env"
+	"nyala-backend/pkg/hmacsha"
 	"nyala-backend/pkg/interfacepkg"
 	"nyala-backend/pkg/jwe"
 	"nyala-backend/pkg/jwt"
@@ -121,6 +122,11 @@ func main() {
 		Key: envConfig["AES_KEY"],
 	}
 
+	// hmacsha credential
+	hmacshaCredential := hmacsha.Credential{
+		Key: envConfig["HMACSHA_KEY"],
+	}
+
 	// AES Front credential
 	aesFrontCredential := aesfront.Credential{
 		Key: envConfig["AES_FRONT_KEY"],
@@ -140,6 +146,7 @@ func main() {
 		EnvConfig:   envConfig,
 		Jwt:         jwtCredential,
 		Jwe:         jweCredential,
+		Hmacsha:     hmacshaCredential,
 		Aes:         aesCredential,
 		AesFront:    aesFrontCredential,
 	}
