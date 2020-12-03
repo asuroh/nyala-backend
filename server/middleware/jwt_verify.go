@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"nyala-backend/model"
 	"strings"
 
 	"net/http"
@@ -35,7 +34,7 @@ func userContextInterface(ctx context.Context, req *http.Request, subject string
 	return context.WithValue(ctx, subject, body)
 }
 
-func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, role string, singleLogin bool) (res map[string]interface{}, err error) {
+func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, singleLogin bool) (res map[string]interface{}, err error) {
 	claims := &jwtClaims{}
 
 	tokenAuthHeader := r.Header.Get("Authorization")
@@ -66,15 +65,7 @@ func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, role string, singleLogi
 		return res, errors.New("Error when load the payload!")
 	}
 
-	// Check if the token provided has a valid role
-	if res["role"] == nil {
-		return res, errors.New("Invalid " + role + " token!")
-	}
-	if res["role"].(string) != role {
-		return res, errors.New("Not an " + role + " token!")
-	}
-
-	if singleLogin && role == "user" {
+	if singleLogin {
 		var deviceID string
 		err = m.ContractUC.GetFromRedis("userDeviceID"+res["id"].(string), &deviceID)
 		if err != nil {
@@ -139,63 +130,31 @@ func (m VerifyMiddlewareInit) VerifyRefreshTokenCredential(next http.Handler) ht
 			return
 		}
 
+		ctx := userContextInterface(r.Context(), r, "user", jweRes)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+// VerifyCustomerTokenCredential ...
+func (m VerifyMiddlewareInit) VerifyCustomerTokenCredential(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jweRes, err := m.verifyJWT(r, false)
+		if err != nil {
+			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		// Check id in table
+		customerUC := usecase.CustomerUC{ContractUC: m.ContractUC}
+		customer, err := customerUC.FindByID(jweRes["id"].(string), false)
+		if customer.CustomerID == "" {
+			apiHandler.RespondWithJSON(w, 401, 401, "Not found!", []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
 		jweRes["customerName"] = customer.CustomerName
 		jweRes["customerEmail"] = customer.Email
 		jweRes["customerPhoneNumber"] = customer.PhoneNumber
-
-		ctx := userContextInterface(r.Context(), r, "user", jweRes)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-}
-
-// VerifySuperadminTokenCredential ...
-func (m VerifyMiddlewareInit) VerifySuperadminTokenCredential(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		jweRes, err := m.verifyJWT(r, "admin", false)
-		if err != nil {
-			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
-			return
-		}
-
-		// Check id in table
-		adminUc := usecase.AdminUC{ContractUC: m.ContractUC}
-		admin, err := adminUc.FindByID(jweRes["id"].(string), false)
-		if admin.ID == "" {
-			apiHandler.RespondWithJSON(w, 401, 401, "Not found!", []map[string]interface{}{}, []map[string]interface{}{})
-			return
-		}
-		if admin.RoleName != model.RoleCodeSuperadmin {
-			apiHandler.RespondWithJSON(w, 401, 401, "only admin can access", []map[string]interface{}{}, []map[string]interface{}{})
-			return
-		}
-
-		jweRes["userName"] = admin.Information.UserName
-		jweRes["roleName"] = admin.RoleName
-
-		ctx := userContextInterface(r.Context(), r, "user", jweRes)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-}
-
-// VerifyAdminTokenCredential ...
-func (m VerifyMiddlewareInit) VerifyAdminTokenCredential(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		jweRes, err := m.verifyJWT(r, "admin", false)
-		if err != nil {
-			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
-			return
-		}
-
-		// Check id in table
-		adminUc := usecase.AdminUC{ContractUC: m.ContractUC}
-		admin, err := adminUc.FindByID(jweRes["id"].(string), false)
-		if admin.ID == "" {
-			apiHandler.RespondWithJSON(w, 401, 401, "Not found!", []map[string]interface{}{}, []map[string]interface{}{})
-			return
-		}
-
-		jweRes["userName"] = admin.Information.UserName
-		jweRes["roleName"] = admin.RoleName
 
 		ctx := userContextInterface(r.Context(), r, "user", jweRes)
 		next.ServeHTTP(w, r.WithContext(ctx))

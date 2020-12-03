@@ -63,32 +63,11 @@ func (boot *Bootup) RegisterRoutes() {
 					r.Get("/refresh_token", customerHandler.RefreshTokenHandler)
 				})
 			})
-		})
 
-		// API ADMIN
-		r.Route("/api-admin", func(r chi.Router) {
-			adminHandler := api.AdminHandler{Handler: handlerType}
-			r.Route("/admin", func(r chi.Router) {
-				r.Group(func(r chi.Router) {
-					r.Post("/login", adminHandler.LoginHandler)
-				})
-				r.Group(func(r chi.Router) {
-					r.Use(mJwt.VerifySuperadminTokenCredential)
-					r.Post("/", adminHandler.CreateHandler)
-					r.Put("/id/{id}", adminHandler.UpdateHandler)
-					r.Delete("/id/{id}", adminHandler.DeleteHandler)
-				})
-				r.Group(func(r chi.Router) {
-					r.Use(mJwt.VerifyAdminTokenCredential)
-					r.Get("/", adminHandler.GetAllHandler)
-					r.Get("/id/{id}", adminHandler.GetByIDHandler)
-				})
-			})
-
-			roleHandler := api.RoleHandler{Handler: handlerType}
-			r.Route("/role", func(r chi.Router) {
-				r.Use(mJwt.VerifyAdminTokenCredential)
-				r.Get("/select", roleHandler.SelectAllHandler)
+			orderHandler := api.OrderHandler{Handler: handlerType}
+			r.Route("/order", func(r chi.Router) {
+				r.Use(mJwt.VerifyCustomerTokenCredential)
+				r.Post("/", orderHandler.CreateHandler)
 			})
 		})
 	})
