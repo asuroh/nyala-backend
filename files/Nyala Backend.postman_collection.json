@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "16d7834d-345c-46cc-a4de-731176b0f39b",
+		"name": "Nyala Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "Customer",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"_comment\": {\n        \"sex\" : \"male atau famale\",\n        \"dob\": \"format: MMDDYYYY\"\n    },\n    \"customer_name\": \"thoriq\",\n    \"email\": \"thoriq@twiscoder.com\",\n    \"phone_number\": \"+628111111112\",\n    \"dob\": \"08-05-1998\",\n    \"sex\": \"male\",\n    \"password\": \"kiasu123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/customer/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"customer",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "90e4b41b-8d9c-4f5c-9e23-f4749dd70c26",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var token = jsonData.data.token;",
+											"var refreshToken = jsonData.data.refresh_token;",
+											"pm.environment.set(\"token\", token);",
+											"pm.environment.set(\"refresh_token\", refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_comment\": \"username input email or phone number\",\n    \"username\": \"+628111111112\",\n    \"password\": \"kiasu123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/customer/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"customer",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Token By Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d70c84fa-a399-4e08-8f0a-7b8f338e89e0",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var token = jsonData.data.token;",
+											"var refreshToken = jsonData.data.refresh_token;",
+											"pm.environment.set(\"token\", token);",
+											"pm.environment.set(\"refresh_token\", refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{refresh_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api/customer/refresh_token",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"customer",
+										"refresh_token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Logic",
+					"item": [
+						{
+							"name": "Fibonacci",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api/logic/fibonacci?n=1000",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"logic",
+										"fibonacci"
+									],
+									"query": [
+										{
+											"key": "n",
+											"value": "1000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Prima",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api/logic/prima?n=100",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"logic",
+										"prima"
+									],
+									"query": [
+										{
+											"key": "n",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Palindrome",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/logic/palindrome?kata=madam",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"logic",
+										"palindrome"
+									],
+									"query": [
+										{
+											"key": "kata",
+											"value": "madam"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"payment_method_id\": \"bb7fe670-49b7-439f-b18c-9c63806cfb22\",\n    \"order_detail\": [\n        {\n            \"product_id\": \"e5a8129a-97df-4e08-895f-10a34c347f41\",\n            \"qty\": 5\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/order",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"order"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
