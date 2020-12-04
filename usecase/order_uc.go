@@ -1,11 +1,12 @@
 package usecase
 
 import (
-	"fmt"
 	"nyala-backend/model"
 	"nyala-backend/pkg/logruslogger"
+	"nyala-backend/pkg/number"
 	"nyala-backend/server/request"
 	"nyala-backend/usecase/viewmodel"
+	"strconv"
 	"time"
 )
 
@@ -14,28 +15,36 @@ type OrderUC struct {
 	*ContractUC
 }
 
-// CheckDetails ...
-func (uc OrderUC) CheckDetails(data *request.OrderRequest, oldData *viewmodel.OrderVM) (err error) {
+// GenerateCode ...
+func (uc OrderUC) GenerateCode(date time.Time) (res string, err error) {
 	ctx := "OrderUC.CheckDetails"
-	fmt.Println(ctx)
-	data.OrderNumber = "PO-123/IX/2020"
-	return err
+
+	m := model.NewOrderModel(uc.DB)
+	count, err := m.Count()
+	if err != nil {
+		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "query", uc.ReqID)
+		return res, err
+	}
+
+	res = "PO-" + strconv.Itoa(count+1) + "/" + number.IntToRoman(int(date.Month())) + "/" + strconv.Itoa(date.Year())
+
+	return res, err
 }
 
 // Create ...
 func (uc OrderUC) Create(data *request.OrderRequest, customerID string) (res viewmodel.OrderVM, err error) {
 	ctx := "OrderUC.Create"
 
-	err = uc.CheckDetails(data, &res)
+	now := time.Now().UTC()
+	orderNumber, err := uc.GenerateCode(now)
 	if err != nil {
-		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "check_details", uc.ReqID)
+		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "generate_order_number", uc.ReqID)
 		return res, err
 	}
 
-	now := time.Now().UTC()
 	res = viewmodel.OrderVM{
 		CustomerID:      customerID,
-		OrderNumber:     data.OrderNumber,
+		OrderNumber:     orderNumber,
 		PaymentMethodID: data.PaymentMethodID,
 		OrderDate:       now.Format(time.RFC3339),
 		CreatedAt:       now.Format(time.RFC3339),

@@ -13,6 +13,7 @@ type orderModel struct {
 
 // IOrder ...
 type IOrder interface {
+	Count() (int, error)
 	Store(body viewmodel.OrderVM, changedAt time.Time) (string, error)
 }
 
@@ -31,6 +32,14 @@ type OrderEntity struct {
 // NewOrderModel ...
 func NewOrderModel(db *sql.DB) IOrder {
 	return &orderModel{DB: db}
+}
+
+// Count ...
+func (model orderModel) Count() (count int, err error) {
+	query := `SELECT COUNT(order_id) FROM orders WHERE deleted_at IS NULL AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM NOW()) AND EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM NOW())`
+	err = model.DB.QueryRow(query).Scan(&count)
+
+	return count, err
 }
 
 // Store ...
