@@ -46,6 +46,7 @@ func (uc OrderUC) Create(data *request.OrderRequest, customerID string) (res vie
 	now := time.Now().UTC()
 	orderNumber, err := uc.GenerateCode(now)
 	if err != nil {
+		uc.Tx.Rollback()
 		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "generate_order_number", uc.ReqID)
 		return res, err
 	}
