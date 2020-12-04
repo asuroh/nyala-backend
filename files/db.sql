@@ -67,3 +67,10 @@ CREATE TABLE "order_details"(
   CONSTRAINT fk_order FOREIGN KEY(order_id) REFERENCES orders(order_id),
   CONSTRAINT fk_product FOREIGN KEY(product_id) REFERENCES products(product_id)
 );
+
+INSERT INTO "public"."payment_methods" ("payment_method_id", "method_name", "code", "created_at", "updated_at", "deleted_at") VALUES
+('bb7fe670-49b7-439f-b18c-9c63806cfb22', 'BCA', 'bca001', '2020-12-04 00:50:34.044097', '2020-12-04 00:50:34.044097', NULL);
+
+INSERT INTO "public"."products" ("product_id", "product_name", "basic_price", "created_at", "updated_at", "deleted_at") VALUES
+('b0aecd12-37ef-4675-8358-eb23ccb40ac3', 'product 2', '2000', '2020-12-04 15:04:19.609661', '2020-12-04 15:04:19.609661', NULL),
+('e5a8129a-97df-4e08-895f-10a34c347f41', 'product 1', '1000', '2020-12-04 00:49:54.621103', '2020-12-04 00:49:54.621103', NULL);

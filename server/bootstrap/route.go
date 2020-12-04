@@ -49,6 +49,8 @@ func (boot *Bootup) RegisterRoutes() {
 			logicHandler := api.LogicHandler{Handler: handlerType}
 			r.Route("/logic", func(r chi.Router) {
 				r.Get("/fibonacci", logicHandler.GetFibonacciHandler)
+				r.Get("/prima", logicHandler.GetPrimaHandler)
+				r.Get("/palindrome", logicHandler.PalindromeHandler)
 			})
 
 			customerHandler := api.CustomerHandler{Handler: handlerType}

@@ -99,15 +99,3 @@ func IntToRoman(num int) string {
 	}
 	return roman
 }
-
-// Fibonacci ...
-func Fibonacci(n float64) float64 {
-	a := float64(0)
-	b := float64(1)
-	for i := float64(0); i < n; i++ {
-		temp := a
-		a = b
-		b = temp + a
-	}
-	return a
-}
