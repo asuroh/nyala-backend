@@ -35,6 +35,14 @@ func (uc OrderUC) GenerateCode(date time.Time) (res string, err error) {
 func (uc OrderUC) Create(data *request.OrderRequest, customerID string) (res viewmodel.OrderVM, err error) {
 	ctx := "OrderUC.Create"
 
+	tx := model.SQLDBTx{DB: uc.DB}
+	dbTx, err := tx.TxBegin()
+	uc.Tx = dbTx.DB
+	if err != nil {
+		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "tx", uc.ReqID)
+		return res, err
+	}
+
 	now := time.Now().UTC()
 	orderNumber, err := uc.GenerateCode(now)
 	if err != nil {
@@ -54,6 +62,7 @@ func (uc OrderUC) Create(data *request.OrderRequest, customerID string) (res vie
 	m := model.NewOrderModel(uc.DB)
 	res.OrderID, err = m.Store(res, now)
 	if err != nil {
+		uc.Tx.Rollback()
 		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "query", uc.ReqID)
 		return res, err
 	}
@@ -68,12 +77,14 @@ func (uc OrderUC) Create(data *request.OrderRequest, customerID string) (res vie
 
 		orderDetail, err := orderDetailUC.Create(&detail)
 		if err != nil {
+			uc.Tx.Rollback()
 			logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "query", uc.ReqID)
 			return res, err
 		}
 
 		res.OrderDetail = append(res.OrderDetail, orderDetail)
 	}
+	uc.Tx.Commit()
 
 	return res, err
 }
